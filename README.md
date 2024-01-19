@@ -27,7 +27,7 @@ Name                           Value
 testzip/testfile1.txt          {116, 101, 115, 116...}
 testzip/testsubfolder1/test... {116, 101, 115, 116...}
 
-> # the "Entries" is a hash table
+> # the "Entries" is a ordered dictionary
 > $zip.Entries.Keys.Count
 2
 > $zip.Entries.Keys.Name
