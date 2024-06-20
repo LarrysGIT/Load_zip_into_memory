@@ -10,10 +10,11 @@ A recent issue requires check files in a zip file, instead of extract it and cle
 
 OverloadDefinitions
 -------------------
-LoadZipContentInToMemory new(string ZipPath, string FullNameRegexFilter)
+LoadZipContentInToMemory new(string ZipPath, string FullNameRegexFilter, switch Recurse)                                                                      
+LoadZipContentInToMemory new(byte[] ZipBytes, string FullNameRegexFilter, switch Recurse) 
 
 > # load a zip file, with a regex filter "txt$" on the fullname
-> $zip = [LoadZipContentInToMemory]::new(".\testzip.zip", "txt$")
+> $zip = [LoadZipContentInToMemory]::new(".\testzip.zip", "txt$", $false)
 > $zip
 
 ZipFile                                                        FullNameRegexFilter Entries
@@ -27,14 +28,13 @@ Name                           Value
 testzip/testfile1.txt          {116, 101, 115, 116...}
 testzip/testsubfolder1/test... {116, 101, 115, 116...}
 
-> # the "Entries" is a ordered dictionary
-> $zip.Entries.Keys.Count
-2
-> $zip.Entries.Keys.Name
-testfile1.txt
-testfile2.txt
+> # load a zip bytes, with a regex filter "txt$" on the fullname
+> $bytes = [io.file]::ReadAllBytes("C:\Users\xxxxxxxxxx\Downloads\Load_zip_into_memory\testzip.zip")
+> $zip = [LoadZipContentInToMemory]::new($bytes, "txt$", $false)
 
-> $zip.Entries.Keys.FullName
-testzip/testfile1.txt
-testzip/testsubfolder1/testfile2.txt
+> # if there is zip files in a zip file, use the recurse switch to load all
+> $bytes = [io.file]::ReadAllBytes("C:\Users\xxxxxxxxxx\Downloads\Load_zip_into_memory\testzip.zip")
+> $zip = [LoadZipContentInToMemory]::new($bytes, ".", $true)
+> $zip.Entries["subzip1.zip"].Content
+> 
 ```
